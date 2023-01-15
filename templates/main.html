@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Async Work In Web Apps Dummy Site</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function doPoll(){
+      $.post('/query', { id: {{ job_id|tojson }} }, function(data) {
+        $( '#status' ).text( data.state );
+        if (data.result == 0) {
+          setTimeout(doPoll, 5000);
+        } else {
+          $( '#result' ).text( data.result );
+        }
+      });
+    }
+    $(document).ready(function(){
+      doPoll();
+    });
+  </script>
+</head>
+
+<body>
+  <div class="content">
+    <h1>Hello to Async Work in Web Apps Dummy Site</h1>
+    <p>Status of your request: <span id="status"></span></p>
+    <p>Your result: <span id="result">?</span></p>
+  </div>
+</body>
+
+</html>
